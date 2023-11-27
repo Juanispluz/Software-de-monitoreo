@@ -5,9 +5,7 @@ from opcion3 import graficos
 from opcion4 import estadisticas_descriptivas_por_dia
 from opcion5 import  tiempo_ejecucion, start_time
 
-if __name__ == "__main__":
-    data = pd.read_csv("utils\Datos_ambientales.txt")
-
+if __name__ == "__main__":   
     while True:
         print("\nMenú Principal:")
         print("1. Configuración")
@@ -19,28 +17,28 @@ if __name__ == "__main__":
 
         opcion = input("Seleccione una opción: ")
 
+        data = pd.read_csv("utils\Datos_ambientales.txt")
+        configuracion_actual = leer_configuracion()
+
         if opcion == "1":
-            configuracion_actual = leer_configuracion()
+            if solicitar_contrasena():         
+                if configuracion_actual is None:
+                    print("Configuración no encontrada. Se creará una nueva configuración predeterminada.")
+                    configuracion_actual = {
+                        'hora_minima': 0,
+                        'hora_maxima': 23,
+                        'limite_temperatura': 0.0,
+                        'limite_humedad': 0.0,
+                        'limite_radiacion': 0.0,
+                        'limite_velocidad_viento': 0.0,
+                    }
+                    escribir_configuracion(configuracion_actual)
 
-            if configuracion_actual is None:
-                print("Configuración no encontrada. Se creará una nueva configuración predeterminada.")
-                configuracion_actual = {
-                    'hora_minima': 0,
-                    'hora_maxima': 23,
-                    'limite_temperatura': 0.0,
-                    'limite_humedad': 0.0,
-                    'limite_radiacion': 0.0,
-                    'limite_velocidad_viento': 0.0,
-                }
-                escribir_configuracion(configuracion_actual)
-
-            if solicitar_contrasena():
-                configurar_parametros(configuracion_actual)
+                configurar_parametros(configuracion_actual) 
             else:
                 print("Contraseña incorrecta. Acceso denegado.")
 
         elif opcion == "2":
-            configuracion_actual = leer_configuracion()
             if configuracion_actual:
                  informacion_ambiental(configuracion_actual)
             else:
