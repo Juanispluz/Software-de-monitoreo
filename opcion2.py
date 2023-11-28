@@ -41,13 +41,21 @@ def calcular_ocurrencias_mes(config, limite, columna):
                 fecha = datetime.strptime(fecha_str, "%d/%m/%Y")
                 mes = fecha.month
 
-                if config['hora_minima'] <= int(row[0][:2]) <= config['hora_maxima']:
+                hora_actual = int(row[0][:2])
+                if config['hora_minima'] <= hora_actual <= config['hora_maxima']:
                     if float(row[columna]) > config[limite]:
-                        ocurrencias[mes] = ocurrencias.get(mes, 0) + 1
+                        if mes not in ocurrencias:
+                            ocurrencias[mes] = set()
+                        ocurrencias[mes].add(fecha.day)
+
+            # Convertir el conjunto de días a la cantidad de días únicos
+            for mes, dias in ocurrencias.items():
+                ocurrencias[mes] = len(dias)
 
             return ocurrencias
     except FileNotFoundError:
         return None
+
 
 def mostrar_info(parametro, info):
     if info is not None:

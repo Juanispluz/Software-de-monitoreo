@@ -42,10 +42,10 @@ if __name__ == "__main__":
             if configuracion_actual:
                  informacion_ambiental(configuracion_actual)
             else:
-                print("Error: Configuración no encontrada. Configure los parámetros primero.")
+                print('Error: Configuración no encontrada. Configure los parámetros primero con la opción "1".')
 
         elif opcion == "3":
-              graficos()
+            graficos()
 
         elif opcion == "4":
             fecha_ingresada = input("Ingrese la fecha en formato dd/mm/yyyy: ")

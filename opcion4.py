@@ -1,7 +1,25 @@
+import pandas as pd
+
+# Función para verificar el formato de fecha
+def validar_formato_fecha(fecha):
+    try:
+        pd.to_datetime(fecha, format='%d/%m/%Y')
+        return True
+    except ValueError:
+        return False
+
 # Función para obtener estadísticas descriptivas para un día específico
 def estadisticas_descriptivas_por_dia(df, fecha):
+    # Validar el formato de fecha
+    if not validar_formato_fecha(fecha):
+        print("Formato de fecha incorrecto. Utilice el formato dd/mm/yyyy.")
+        return
+
+    # Convertir la fecha al formato 'YYYY-MM-DD' para la filtración
+    fecha_formato_correcto = pd.to_datetime(fecha, format='%d/%m/%Y').strftime('%d/%m/%Y')
+
     # Filtrar datos para el día específico
-    datos_dia = df[df['Fecha'] == fecha]
+    datos_dia = df[df['Fecha'] == fecha_formato_correcto]
 
     if datos_dia.empty:
         print(f"No hay datos disponibles para la fecha {fecha}")
